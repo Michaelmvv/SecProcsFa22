@@ -1,6 +1,16 @@
 
 #include "util.h"
 
+static inline uint64_t rdtscp64() {
+    uint32_t low, high;
+    asm volatile ("rdtscp": "=a" (low), "=d" (high) :: "ecx");
+    return (((uint64_t)high) << 32) | low;
+}
+void wait(int time){
+  uint64_t foo = rdtscp64();
+  while (rdtscp64()-foo<time);
+}
+
 /* Measure the time it takes to access a block with virtual address addr. */
 CYCLES measure_one_block_access_time(ADDR_PTR addr)
 {

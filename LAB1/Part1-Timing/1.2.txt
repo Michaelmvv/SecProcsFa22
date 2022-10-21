@@ -1,26 +1,26 @@
 # Put all sizes in bytes and times in cycles
 
 Cache Line Size:
-L1: 64
-L2:
-L3:
+L1: 64 bytes
+L2: 64 bytes
+L3: 64 bytes
 
 Total Size:
-L1:
-L2:
-L3:
+L1: 32 KiB *2 (data and instruction)
+L2: 256 KiB
+L3: 8 MiB
 
 Number of Ways:
-L1:
-L2:
-L3:
+L1: 8
+L2: 8
+L3: 16
 
 Number of Sets:
-L1:
-L2:
-L3:
+L1: 32768 bytes  /64 bytes /8  = 64
+L2: 262144 bytes /64 bytes /8  = 512
+L3: 8388608bytes /64 bytes /16 = 8192
 
-Latency:
-L1:
-L2:
-L3:
+Latency: ??? seems a bit low...
+L1: 4 cycles
+L2: 12 cycles
+L3: 26-31 cycles

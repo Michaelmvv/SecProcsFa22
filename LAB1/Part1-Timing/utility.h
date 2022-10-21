@@ -22,9 +22,9 @@ static inline uint32_t rdtscpp() {
     return rv;
 }
 
-static inline uint64_t rdtscpp64() {
+static inline uint64_t rdtscp64() {
     uint32_t low, high;
-    asm volatile ("rdtscpp": "=a" (low), "=d" (high) :: "ecx");
+    asm volatile ("rdtscp": "=a" (low), "=d" (high) :: "ecx");
     return (((uint64_t)high) << 32) | low;
 }
 

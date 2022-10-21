@@ -1,2 +1,2 @@
-L2_LINES: ?
-L3_LINES: ?
+L2_LINES: 32768 bytes  /64 bytes = 512
+L3_LINES: 262144 bytes /64 bytes = 4096

@@ -2,7 +2,7 @@
 #include"util.h"
 // mman library to be used for hugepage allocations (e.g. mmap or posix_memalign only)
 #include <sys/mman.h>
-#define ThreshHold 70
+#define ThreshHold 65
 #define ThreshHold2 35
 // #define samples 80000 //Was working
 // #define samples 40000

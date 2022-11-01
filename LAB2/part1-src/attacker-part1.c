@@ -30,7 +30,7 @@ static inline void call_kernel_part1(int kernel_fd, char *shared_memory, size_t 
     write(kernel_fd, (void *)&local_cmd, sizeof(local_cmd));
 }
 
-#define NUM_SAMPLES 200
+#define NUM_SAMPLES 4
 #define DEBUG 0
 uint32_t warmup=0;
 
@@ -71,6 +71,7 @@ int run_attacker(int kernel_fd, char *shared_memory) {
                 {
                     clflush(shared_memory+(i*LAB2_PAGE_SIZE));
                 }
+                asm volatile("mfence"); //Without this I have to take around 200 samples
                 call_kernel_part1(kernel_fd, shared_memory, current_offset);
                 for (size_t i = 0; i < LAB2_SHARED_MEMORY_NUM_PAGES; i++)
                 {
